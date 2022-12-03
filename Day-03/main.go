@@ -8,13 +8,13 @@ import (
 
 func main() {
 	input, err := os.Open("rucks.txt")
-	defer input.Close()
 	if err != nil {
 		panic(err)
 	}
 
 	fileScanner := bufio.NewScanner(input)
 	fileScanner.Split(bufio.ScanLines)
+	var fileLines []string
 
 	Found := false
 	TotalPriority := 0
@@ -33,15 +33,31 @@ func main() {
 	}
 
 	for fileScanner.Scan() {
-		line := fileScanner.Text()
-		left := line[:len(line)/2]
-		right := line[len(line)/2:]
+		fileLines = append(fileLines, fileScanner.Text())
+	}
+	input.Close()
 
-		for _, v := range left {
-			for _, x := range right {
+	linePointer := 0
+	for linePointer < len(fileLines) {
+		first := fileLines[linePointer]
+		linePointer += 1
+		second := fileLines[linePointer]
+		linePointer += 1
+		third := fileLines[linePointer]
+		linePointer += 1
+
+		for _, v := range first {
+			for _, x := range second {
 				if v == x {
-					TotalPriority += PriorityScores[string(v)]
-					Found = true
+					for _, z := range third {
+						if v == z {
+							TotalPriority += PriorityScores[string(v)]
+							Found = true
+							break
+						}
+					}
+				}
+				if Found {
 					break
 				}
 			}
