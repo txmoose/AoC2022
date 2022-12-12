@@ -84,12 +84,13 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		for j := 0; j < numMoves; j += 1 {
-			n := len(stacks[popStack]) - 1
-			hold := stacks[popStack][n]
-			stacks[popStack] = stacks[popStack][:n]
 
-			stacks[pushStack] = append(stacks[pushStack], hold)
+		n := len(stacks[popStack]) - numMoves
+		hold := stacks[popStack][n:]
+		stacks[popStack] = stacks[popStack][:n]
+
+		for x := 0; x < len(hold); x += 1 {
+			stacks[pushStack] = append(stacks[pushStack], hold[x])
 		}
 	}
 
