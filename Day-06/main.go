@@ -28,6 +28,7 @@ func main() {
 	var (
 		fileLines   []string
 		inputStream []rune
+		pktStart    int
 	)
 
 	input, err := os.Open("input.txt")
@@ -52,7 +53,17 @@ func main() {
 		test := removeDuplicateValues(inputStream[i-4 : i])
 		//fmt.Printf("Got back => %+v\n", test)
 		if len(test) == 4 {
-			fmt.Printf("The answer is %d\n", i)
+			fmt.Printf("The packet start is %d\n", i)
+			pktStart = i
+			break
+		}
+	}
+
+	msgStream := inputStream[pktStart:]
+	for j := 14; j < len(msgStream); j += 1 {
+		msgTest := removeDuplicateValues(msgStream[j-14 : j])
+		if len(msgTest) == 14 {
+			fmt.Printf("The message start is %d\n", j+pktStart)
 			break
 		}
 	}
